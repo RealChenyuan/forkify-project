@@ -116,6 +116,7 @@ const clearBookmarks = function () {
 
 export const uploadRecipe = async function (newRecipe) {
   try {
+    /*
     const ingredients = Object.entries(newRecipe)
       .filter(entry => entry[0].startsWith('ingredient') && entry[1] !== '')
       .map(ing => {
@@ -128,6 +129,18 @@ export const uploadRecipe = async function (newRecipe) {
         const [quantity, unit, description] = ingArr;
         return { quantity: quantity ? +quantity : null, unit, description };
       });
+     */
+
+    let ingredients = [];
+    Object.entries(newRecipe)
+      .filter(entry => entry[0].startsWith('ingredient'))
+      .forEach(entry => {
+        const [_, index, attr] = entry[0].split('-');
+        ingredients[index - 1]
+          ? (ingredients[index - 1][attr] = entry[1])
+          : ingredients.push({ quantity: entry[1] ? +entry[1] : null });
+      });
+    ingredients = ingredients.filter(entry => entry.description);
 
     const recipe = {
       title: newRecipe.title,

@@ -32,6 +32,12 @@ class PaginationView extends View {
     `;
   }
 
+  _generateMarkupCurrentPage(curPage, numPages) {
+    return `
+      <div class="pagination__current">${curPage} / ${numPages}</div>
+    `;
+  }
+
   _generateMarkup() {
     const curPage = this._data.page;
     const numPages = Math.ceil(
@@ -41,21 +47,28 @@ class PaginationView extends View {
 
     // Page 1, and there are other pages
     if (curPage === 1 && numPages > 1) {
-      return this._generateMarkupButton(curPage, 1);
+      return (
+        this._generateMarkupButton(curPage, 1) +
+        this._generateMarkupCurrentPage(curPage, numPages)
+      );
     }
     // Last Page
     if (curPage === numPages && numPages > 1) {
-      return this._generateMarkupButton(curPage, 0);
+      return (
+        this._generateMarkupButton(curPage, 0) +
+        this._generateMarkupCurrentPage(curPage, numPages)
+      );
     }
     // Other Page
     if (curPage < numPages) {
       return (
         this._generateMarkupButton(curPage, 0) +
-        this._generateMarkupButton(curPage, 1)
+        this._generateMarkupButton(curPage, 1) +
+        this._generateMarkupCurrentPage(curPage, numPages)
       );
     }
     // Page 1, and there are NO other pages
-    return ``;
+    return this._generateMarkupCurrentPage(curPage, numPages);
   }
 }
 

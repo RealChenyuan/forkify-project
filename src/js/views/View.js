@@ -10,10 +10,12 @@ export default class View {
    * @this {Object} View instance
    * @author Chen Yuan
    */
-  render(data, render = true) {
-    if (!data || (Array.isArray(data) && data.length === 0))
-      return this.renderError();
-    this._data = data;
+  render(data, render = true, emptyData = false) {
+    if (!emptyData) {
+      if (!data || (Array.isArray(data) && data.length === 0))
+        return this.renderError();
+      this._data = data;
+    }
     const markup = this._generateMarkup();
 
     if (!render) return markup;
